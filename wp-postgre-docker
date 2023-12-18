@@ -1,0 +1,33 @@
+1. mkdir wp.yml
+2. nano wp.yml
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress:5.6.0-php7.4
+    restart: always
+    ports:
+      - 81:80
+	- 443:443
+    volumes:
+      - wordpress:/var/www/html
+
+volumes:
+  wordpress:
+3. docker-compose -f wp.yml up
+4. docker exec -it idcontainer bash
+5. apt update && apt install nano git libpq-dev iputils-ping network-manager -y
+6. docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && docker-php-ext-install pdo pdo_pgsql pgsql
+7. wget https://downloads.wordpress.org/plugin/wppg.1.0.1.zip
+8. unzip wppg.1.0.1.zip
+9. mv wppg /var/www/html/wordpress/wp-content/plugins/
+10. cp /var/www/html/wordpress/wp-content/plugins/wppg/pg4wp/db.php /var/www/html/wordpress/wp-content/
+11. nano /var/www/html/wordpress/wp-content/db.php
+define( 'PG4WP_ROOT', ABSPATH.'wp-content/plugins/wppg/pg4wp');
+12. mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+13. nano /var/www/html/wordpress/wp-config.php
+define( 'DB_NAME', 'wordpressdb' );
+define( 'DB_USER', 'wordpress' );
+define( 'DB_PASSWORD', 'wpPassword' );
+define( 'DB_HOST', 'localhost:3307' );
