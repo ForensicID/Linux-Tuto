@@ -1,0 +1,3 @@
+apt install bind9 dnsutils resolvconf
+cp db.127 lks.reverse
+cp db.local lks.forward
