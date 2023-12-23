@@ -1,0 +1,1 @@
+echo -n 'Skills39' > /etc/ldapscripts/ldapscripts.passwd (set password admin)
