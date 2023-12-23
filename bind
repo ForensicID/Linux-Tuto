@@ -1,3 +1,65 @@
 apt install bind9 dnsutils resolvconf
 cp db.127 lks.reverse
 cp db.local lks.forward
+cp lks.reverse lks.reverse.172
+nano named.conf.local
+    zone "lksjogja1.lan" {
+            type master;
+            file "/etc/bind/lks.forward";
+    };
+    
+    zone "1.168.192.in-addr.arpa" {
+            type master;
+            file "/etc/bind/lks.reverse";
+    };
+    
+    zone "172.in-addr.arpa" {
+            type master;
+            file "/etc/bind/lks.reverse.172";
+    };
+nano lks.forward
+      @       IN      SOA     lksjogja1.lan. root.lksjogja1.lan. (
+                                    2         ; Serial
+                               604800         ; Refresh
+                                86400         ; Retry
+                              2419200         ; Expire
+                               604800 )       ; Negative Cache TTL
+      ;
+      @       IN      NS      monitor.lksjogja1.lan.
+      monitor.lksjogja1.lan.       IN      A       172.64.1.2
+      lksjogja1.lan.  IN      A       192.168.1.2
+      www.lksjogja1.lan.      IN      A       192.168.1.2
+      data.lksjogja1.lan.     IN      A       192.168.1.6
+      mail.lksjogja1.lan.     IN      MX 10   192.168.1.2
+      ldap.lksjogja1.lan.     IN      A       192.168.1.10
+nano lks.reverse
+      @       IN      SOA     lksjogja1.lan. root.lksjogja1.lan. (
+                                    1         ; Serial
+                               604800         ; Refresh
+                                86400         ; Retry
+                              2419200         ; Expire
+                               604800 )       ; Negative Cache TTL
+      ;
+      @       IN      NS      monitor.lksjogja1.lan.
+      2       IN      PTR     lksjogja1.lan.
+      2       IN      PTR     www.lksjogja1.lan.
+      6       IN      PTR     data.lksjogja1.lan.
+      2       IN      PTR     mail.lksjogja1.lan.
+      10      IN      PTR     ldap.lksjogja1.lan.
+nano lks.reverse.172
+@       IN      SOA     lksjogja1.lan. root.lksjogja1.lan. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      monitor.lksjogja1.lan.
+64.1.2  IN      PTR     monitor.lksjogja1.lan.
+nano named.conf.options
+       forwarders {
+                      8.8.8.8;
+               };
+systemctl restart bind9
+systemctl status bind9
+nslookup
