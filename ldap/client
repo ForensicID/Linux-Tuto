@@ -1,0 +1,24 @@
+apt install libnss-ldap libpam-ldap nscd
+dpkg-reconfigure libnss-ldap
+nano -l /etc/pam.d/common-password
+      password        [success=1 user_unknown=ignore default=die]     pam_ldap.so try_first_pass
+nano -l /etc/pam.d/common-session
+      # end of pam-auth-update config
+      session optional        pam_mkhomedir.so skel=/etc/skel umask=077
+nano /etc/nsswitch.conf
+      passwd:         compat ldap
+      group:          compat ldap
+      shadow:         compat ldap
+      gshadow:        files ldap
+      
+      hosts:          files dns
+      networks:       files
+      
+      protocols:      db files
+      services:       db files
+      ethers:         db files
+      rpc:            db files
+      
+      netgroup:       nis
+systemctl restart nscd
+systemctl status nscd
