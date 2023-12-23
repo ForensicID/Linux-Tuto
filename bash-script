@@ -1,0 +1,2 @@
+nano /etc/bash.bashrc
+source /etc/bash.bashrc
