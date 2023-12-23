@@ -30,6 +30,7 @@ nano lks.forward
       lksjogja1.lan.  IN      A       192.168.1.2
       www.lksjogja1.lan.      IN      A       192.168.1.2
       data.lksjogja1.lan.     IN      A       192.168.1.6
+      mail.lksjogja1.lan.     IN      A       192.168.1.2
       mail.lksjogja1.lan.     IN      MX 10   192.168.1.2
       ldap.lksjogja1.lan.     IN      A       192.168.1.10
 nano lks.reverse
